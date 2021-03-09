@@ -75,8 +75,39 @@ Mac/Linux:
 ```
 perm=perm3dFilename(testRock,dx,'spherePack');
 ```
+Now we change the radius en see the changes in permeability, explore the range:
+```
+radii=linspace(0.5,sqrt(2)/2,5);
+```
+We get the following results:
+
+<img src="resultsPack.png" alt="sphere pack" width="600">
 
 
+## Distance Function, a tool from the Level Set Method
+We explored a way to evolve the geometry. However that way is a bit artificial and constrained. Now we will use the distance function which is a more general way to modify the geometry of the rock.
 
-## Exploring the Distance Function
-## 2D Curvature
+Here we will use the same code as before, but will add a line to create an implicit function, which in this case is the distance function.
+
+```
+df=-implicitFuncFromBinary(testRock,dx);
+```
+We will now compute the properties on the different levels of the distance function for our sphere pack.
+
+```
+figure()
+lev=0.017;
+isosurface(X,Y,Z,df,lev)
+daspect([1,1,1])
+view(3)
+```
+
+<img src="implicit.png" alt="sphere pack" width="600">
+
+Now we can compute permeability on the different levels as follows:
+```
+lev=0.017;
+perm=perm3dFilename(df>lev,dx,'spherePack');
+```
+
+
